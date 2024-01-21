@@ -28,11 +28,11 @@ def hkdf(input_str, length):
                 info=b'',
                 backend=default_backend())
     return hkdf.derive(input_str)
-def pad(msg):
+def pad(msg) -> str:
     """PKCS7 padding to align to a 16-byte boundary"""
     num = 16 - (len(msg) % 16)
     return msg + bytes([num] * num)
-def unpad(msg):
+def unpad(msg) -> str:
     """Remove PKCS7 padding"""
     return msg[:-msg[-1]]
 
