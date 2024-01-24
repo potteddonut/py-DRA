@@ -226,5 +226,10 @@ print() # line break
 alice.dh_ratchet(bob.DHratchet.public_key())
 
 # test send/receive encrypt and decrypt
-alice.send(bob, b'Hello world!')
-bob.send(alice, b'Goodbye world!')
+print()
+
+alice.send(bob, str.encode(input("Enter Alice's message to Bob: ")))
+print()
+
+bob.send(alice, str.encode(input("Enter Bob's message to Alice: ")))
+print()
