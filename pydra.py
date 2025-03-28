@@ -201,35 +201,36 @@ class Alice(object):
         msg = unpad(AES.new(key, AES.MODE_CBC, iv).decrypt(cipher))
         print('[Alice]\tDecrypted message: ', msg)
 
-alice = Alice()
-bob = Bob()
-
-# both Alice and Bob have arrived a common shared secret key generated over X3DH
-# these keys are now used to establish session keys with DRA
-alice.x3dh(bob)
-bob.x3dh(alice)
-# initialise their symmatric ratchets
-alice.init_ratchets()
-bob.init_ratchets()
-
-# 1 send or receive = 1 turn of the ratchets
-# print their matching send/recv pairs
-# at this point, the session has been established and messages are sent with forward secrecy
-print() # line break
-print('[Alice]\tSend ratchet: ', list(map(b64, alice.send_ratchet.next())))
-print('[Bob]\tReceive ratchet: ', list(map(b64, bob.recv_ratchet.next())))
-print('[Alice]\tReceive ratchet: ', list(map(b64, alice.recv_ratchet.next())))
-print('[Bob]\tSend ratchet: ', list(map(b64, bob.send_ratchet.next())))
-
-# initialise Alice's sending ratchet with Bob's public key
-print() # line break
-alice.dh_ratchet(bob.DHratchet.public_key())
-
-# test send/receive encrypt and decrypt
-print()
-
-alice.send(bob, str.encode(input("Enter Alice's message to Bob: ")))
-print()
-
-bob.send(alice, str.encode(input("Enter Bob's message to Alice: ")))
-print()
+if __name__ == "__main__":
+    alice = Alice()
+    bob = Bob()
+    
+    # both Alice and Bob have arrived a common shared secret key generated over X3DH
+    # these keys are now used to establish session keys with DRA
+    alice.x3dh(bob)
+    bob.x3dh(alice)
+    # initialise their symmetric ratchets
+    alice.init_ratchets()
+    bob.init_ratchets()
+    
+    # 1 send or receive = 1 turn of the ratchets
+    # print their matching send/recv pairs
+    # at this point, the session has been established and messages are sent with forward secrecy
+    print() # line break
+    print('[Alice]\tSend ratchet: ', list(map(b64, alice.send_ratchet.next())))
+    print('[Bob]\tReceive ratchet: ', list(map(b64, bob.recv_ratchet.next())))
+    print('[Alice]\tReceive ratchet: ', list(map(b64, alice.recv_ratchet.next())))
+    print('[Bob]\tSend ratchet: ', list(map(b64, bob.send_ratchet.next())))
+    
+    # initialise Alice's sending ratchet with Bob's public key
+    print() # line break
+    alice.dh_ratchet(bob.DHratchet.public_key())
+    
+    # test send/receive encrypt and decrypt
+    print()
+    
+    alice.send(bob, str.encode(input("Enter Alice's message to Bob: ")))
+    print()
+    
+    bob.send(alice, str.encode(input("Enter Bob's message to Alice: ")))
+    print()
